@@ -12,6 +12,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const db = new pg.Client({
+    connectionString: process.env.DATABASE_URL,
     user: process.env.DB_USER,
     host: "localhost",
     database: "AuthData",

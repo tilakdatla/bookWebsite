@@ -35,6 +35,7 @@ app.use(passport.session());
 app.set('view engine', 'ejs');
 
 const db = new pg.Client({
+  connectionString: process.env.DATABASE_URL,
   user: process.env.DB_USER,
   host: "localhost",
   database: process.env.DB_NAME,
