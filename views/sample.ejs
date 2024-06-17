@@ -1,0 +1,40 @@
+<%- include("partials/header1.ejs") %>
+<style>
+  .bookDes{
+    font-size: 23px;
+}
+ 
+  #authorName{
+    font-size: 20px;
+  }
+</style>
+
+<!-- Hero section -->
+<div class="container col-xxl-8 px-4 py-5">
+  <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+    <div class="col-10 col-sm-8 col-lg-6">
+      <img src="<%= book.imgurl %>" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" >
+    </div>
+    <div class="col-lg-6">
+      <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3"><%= book.title %></h1>
+      <h2 id="authorName" class="display-5 fw-bold text-body-emphasis lh-1 mb-3">By <%= book.author %></h2>
+      <p class="lead"><%= book.summary %></p>
+     
+    </div>
+  </div>
+</div>
+
+
+<div class="container">
+ <p class="bookDes">  
+   <%= book.description %>
+ </p>
+</div>
+
+
+
+
+
+
+
+<%- include("partials/footer1.ejs") %>

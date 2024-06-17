@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Website</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="./styles/style.css">
+</head>
+<body>
+    <nav class="py-2 bg-body-tertiary border-bottom">
+        <div class="container d-flex flex-wrap">
+          <ul class="nav me-auto">
+            <li class="nav-item"><a href="/secrets" class="nav-link link-body-emphasis px-2 active" aria-current="page">Home</a></li>
+            <li class="nav-item"><a href="/upload" class="nav-link link-body-emphasis px-2">Add</a></li>
+            <li class="nav-item"><a href="/active-user" class="nav-link link-body-emphasis px-2">Active Users</a></li>
+          </ul>
+          <ul class="nav">
+            <li class="nav-item"><a href="/profile" class="nav-link link-body-emphasis px-2">Profile</a></li>
+            <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2">Items</a></li>
+            <li class="nav-item"><a href="/listing" class="nav-link link-body-emphasis px-2">Listing</a></li>
+          </ul>
+        </div>
+      </nav>
+    
+      <header class="py-3 mb-4 border-bottom">
+        <div class="container d-flex flex-wrap justify-content-center">
+          <a href="/" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto link-body-emphasis text-decoration-none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="margin-right: 5px;" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
+                <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/>
+            </svg>
+            <span class="fs-4">BookBuddy</span>
+          </a>
+          <form class="col-12 col-lg-auto mb-3 mb-lg-0" role="search" action="/search" method="get">
+            <input type="search" class="form-control" name="query" placeholder="Search..." aria-label="Search">
+        </form>
+        </div>
+      </header>
+     
+    
+    <!-- hero section -->
+    
+    <div class="px-4 pt-5 my-5 text-center border-bottom">
+        <h1 class="display-4 fw-bold text-body-emphasis">BookBuddy</h1>
+        <div class="col-lg-6 mx-auto">
+          <p class="lead mb-4">Welcome to our Book Exchange Platform, a haven for book lovers! Our platform is a one-stop solution for exchanging, lending, and borrowing books. Discover new reading material, share your favorite books, and connect with fellow book enthusiasts in your community.</p>
+          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+            <button type="button" class="btn btn-primary btn-lg px-4 me-sm-3">Get a Quote</button>
+            <button type="button" href="/about" class="btn btn-outline-secondary btn-lg px-4">About us</button>
+          </div>
+        </div>
+        <div class="overflow-hidden" style="max-height: 30vh;">
+          <div class="container px-5">
+            <img src="https://www.simplemost.com/wp-content/uploads/2017/05/AdobeStock_79551556-e1662486101670.jpeg" class="img-fluid border rounded-3 shadow-lg mb-4" alt="Example image" width="700" height="600" loading="eager">
+          </div>
+        </div>
+    </div>
+    
+
+
+    
+<div class="container">
+  <% if (locals.books) { %>
+  <div class="row mb-2">
+    <% books.forEach(function(book, index) { %>
+      <div class="col-md-6">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+          <div class="col p-4 d-flex flex-column position-static">
+            <strong class="d-inline-block mb-2 text-primary-emphasis"><%= book.type %></strong>
+            <h3 class="mb-0"><%= book.title %></h3>
+            <div class="mb-1 text-body-secondary"><%= new Date(book.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) %></div>
+            <p class="card-text mb-auto"><%= book.summary %></p>
+            <a href="/bookdata/<%= book.id %>" class="icon-link gap-1 icon-link-hover stretched-link">
+              Continue reading
+              <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
+            </a>
+          </div>
+          <div class="col-auto d-none d-lg-block">
+            <img src="/<%= book.book_img_location%>" width="200" height="250">
+            
+          </div>
+        </div>
+      </div>
+      <% if (index % 2 !== 0 && index !== books.length - 1) { %>
+        </div><div class="row mb-2">
+      <% } %>
+    <% }); %>
+  </div>
+  <% } %>
+</div>
+  
+      <div class="container">
+      <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+          </ul>
+      </nav>
+      </div>
+
+      <%- include("partials/footer1.ejs") %>
+  

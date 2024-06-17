@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Book Details</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #212529;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background-color: #343a40;
+            border-radius: 8px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            padding: 2rem;
+            max-width: 800px;
+        }
+        .book-pic {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 30px;
+        }
+        .book-pic img {
+            width: 150px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .form-control {
+            font-size: 0.875rem;
+        }
+        .labels {
+            font-size: 1rem;
+        }
+        .profile-button {
+            background: #db4437;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .profile-button:hover, .profile-button:focus, .profile-button:active {
+            background: #c33c28;
+            color: white;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Book Buddy</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a href="/secrets" class="nav-link active" aria-current="page">Home</a></li>
+                    <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container rounded bg-dark mt-5 mb-5">
+        <div class="row">
+            <div class="col-md-3 border-right">
+                <div class="book-pic">
+                    <img src="/<%= book.book_img_location %>" alt="Book Image">
+                    <span class="font-weight-bold"><%= book.title %></span>
+                    <span class="text-white-50"><%= book.author %></span>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="p-3 py-5">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="text-right">Update Book Details</h4>
+                    </div>
+                    <form action="/updatebook/<%= book.id %>" method="post" enctype="multipart/form-data">
+                        <div class="row mt-2">
+                            <div class="col-md-12">
+                                <label class="labels">Book Image</label>
+                                <input type="file" name="bookImage" class="form-control">
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                <label class="labels">Title</label>
+                                <input type="text" name="title" class="form-control" placeholder="Title" value="<%= book.title %>">
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                <label class="labels">Author</label>
+                                <input type="text" name="author" class="form-control" placeholder="Author" value="<%= book.author %>">
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                <label class="labels">Summary</label>
+                                <textarea name="summary" class="form-control" placeholder="Summary" rows="3"><%= book.summary %></textarea>
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                <label class="labels">Description</label>
+                                <textarea name="description" class="form-control" placeholder="Description" rows="5"><%= book.description %></textarea>
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                <label class="labels">Rating</label>
+                                <input type="number" name="rating" class="form-control" placeholder="Rating" value="<%= book.rating %>" min="0" max="5" step="0.1">
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                <label class="labels">Type</label>
+                                <input type="text" name="type" class="form-control" placeholder="Type" value="<%= book.type %>">
+                            </div>
+                        </div>
+                        <div class="mt-5 text-center">
+                            <button class="btn profile-button" type="submit">Update Book</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

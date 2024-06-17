@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat App</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <section class="chat_section">
+    <div class="brand">
+      <img src="img/msg.jpg" alt="msg logo" height="30px" width="30px"/>
+      <h1>Chat app</h1>
+    </div>
+    <div class="message_area"></div>
+    <div>
+      <textarea id="textarea" cols="30" rows="1" placeholder="Write a message.."></textarea>
+    </div>
+    <input type="hidden" id="nickname" value="<%= currentUser.nickname %>">
+    <input type="hidden" id="room" value="<%= room %>">
+  </section>
+
+  <script src="http://localhost:3001/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io('http://localhost:3001');
+    let sender = document.querySelector("#nickname").value;
+    let room = document.querySelector("#room").value;
+
+    let textarea = document.querySelector("#textarea");
+    let messageArea = document.querySelector(".message_area");
+
+    socket.emit('join-room', { sender, room });
+    socket.emit('fetch-messages', room);
+
+    textarea.addEventListener("keyup", (e) => {
+      if (e.key === 'Enter' && textarea.value.trim()) {
+        e.preventDefault();
+        sendMessage(e.target.value);
+      }
+    });
+
+    function sendMessage(message) {
+      let data = {
+        sender: sender,
+        message: message.trim(),
+        room: room,
+      };
+
+      appendMessage(data, 'outgoing');
+      textarea.value = '';
+      scrollToBottom();
+
+      socket.emit('message', data);
+    }
+
+    function appendMessage(data, type) {
+      let mainDiv = document.createElement('div');
+      let className = type;
+      mainDiv.classList.add(className, 'message');
+
+      let markup = `
+        <h4>${data.sender === sender ? 'You' : data.sender}</h4>
+        <p>${data.message}</p>
+      `;
+
+      mainDiv.innerHTML = markup;
+      messageArea.appendChild(mainDiv);
+    }
+
+    socket.on('load-messages', (messages) => {
+      messageArea.innerHTML = '';
+      messages.forEach(msg => {
+        appendMessage({sender: msg.sender, message: msg.content}, msg.sender === sender ? 'outgoing' : 'incoming');
+      });
+    });
+
+    socket.on('message', (data) => {
+      if (data.sender !== sender) {
+        appendMessage(data, 'incoming');
+        scrollToBottom();
+      }
+    });
+
+    function scrollToBottom() {
+      messageArea.scrollTop = messageArea.scrollHeight;
+    }
+  </script>
+</body>
+</html>

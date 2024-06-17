@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <title>Additional Information</title>
+    <style>
+        body {
+            background-color: #212529;
+            color: #ffffff;
+        }
+        .form-control, .btn, .form-check-label {
+            font-size: 0.875rem;
+        }
+        .form-floating > label, label {
+            font-size: 1rem;
+        }
+        .btn-google, .btn-location {
+            background-color: #db4437;
+            color: white;
+        }
+        .btn-google:hover, .btn-location:hover {
+            background-color: #c33c28;
+            color: white;
+        }
+        .container.main-box {
+            background-color: #343a40;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 600px;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+        .interests-label {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+        .btn-wrapper {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container main-box">
+        <form action="/additional-info" method="POST">
+            <div class="text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="72" height="57" style="margin-right: 5px;" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
+                    <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/>
+                </svg>
+                <h1 class="h3 mb-3 fw-normal">Additional Information</h1>
+            </div>
+            <% if (locals.error) { %>
+                <div class="error-message text-center"><%= error %></div>
+            <% } %>
+            <div class="form-row">
+                <div class="form-group col-md-12 mb-3">
+                    <label for="interests" class="interests-label">Interests in Books</label>
+                    <div class="checkbox-grid">
+                        <div><input type="checkbox" name="interest" value="Fantasy"> Fantasy</div>
+                        <div><input type="checkbox" name="interest" value="Drama"> Drama</div>
+                        <div><input type="checkbox" name="interest" value="Sci-Fi"> Sci-Fi</div>
+                        <div><input type="checkbox" name="interest" value="Romance"> Romance</div>
+                        <div><input type="checkbox" name="interest" value="Thriller"> Thriller</div>
+                        <div><input type="checkbox" name="interest" value="Mystery"> Mystery</div>
+                        <div><input type="checkbox" name="interest" value="Non-Fiction"> Non-Fiction</div>
+                        <div><input type="checkbox" name="interest" value="Historical"> Historical</div>
+                        <div><input type="checkbox" name="interest" value="Biography"> Biography</div>
+                        <div><input type="checkbox" name="interest" value="Poetry"> Poetry</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6 mb-3">
+                    <label for="floatingPhone">Phone Number</label>
+                    <input type="text" name="phone" class="form-control" id="floatingPhone" placeholder="Phone Number" required>
+                </div>
+                <div class="form-group col-md-6 mb-3">
+                    <label for="floatingState">State</label>
+                    <input type="text" name="state" class="form-control" id="floatingState" placeholder="State" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6 mb-3">
+                    <label for="floatingDistrict">District</label>
+                    <input type="text" name="district" class="form-control" id="floatingDistrict" placeholder="District" required>
+                </div>
+                <div class="form-group col-md-6 mb-3">
+                    <label for="floatingTown">Town/Village</label>
+                    <input type="text" name="town" class="form-control" id="floatingTown" placeholder="Town/Village" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6 mb-3">
+                    <label for="floatingPincode">Pin Code</label>
+                    <input type="text" name="pincode" class="form-control" id="floatingPincode" placeholder="Pin Code" required>
+                </div>
+                
+            </div>
+            <div class="btn-wrapper">
+                <button id="get-location" class="btn btn-location btn-block w-100 py-2" >Use Current Location</button>
+            </div>
+            <div class="btn-wrapper">
+                <button class="btn btn-primary w-100 py-2" type="submit">Submit</button>
+            </div>
+            <p class="mt-5 mb-3 text-body-secondary">© 2017–2024</p>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        const btn = document.querySelector("#get-location");
+        
+        async function getData(lats,long)
+        {
+            const API_URL=`https://geocode.maps.co/reverse?lat=${lats}&lon=${long}&api_key=665832fe110e1306615969bmfe36983`;  
+            
+            const promise=await fetch(API_URL);
+            return await promise.json();
+        }
+
+        async function gotLocation(position) {
+            const lats=position.coords.latitude;
+            const long=position.coords.longitude;
+            console.log(lats);
+            console.log(long);
+            const data=await getData(lats,long);
+            
+            document.querySelector("#floatingDistrict").value = data.address.state_district;
+            document.querySelector("#floatingTown").value = data.address.town;
+           document.querySelector("#floatingState").value = data.address.state;
+           document.querySelector("#floatingPincode").value = data.address.postcode;
+
+        }
+        function showError(error) {
+           console.log(error);
+        }
+
+        btn.addEventListener('click', () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(gotLocation, showError);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        });
+    </script>
+</body>
+</html>
