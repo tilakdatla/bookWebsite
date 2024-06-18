@@ -1,47 +1,45 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "index.js",
-        "use": "@vercel/node"
-      },
-      {
-        "src": "bookData.js",
-        "use": "@vercel/node"
-      },
-      {
-        "src": "server.js",
-        "use": "@vercel/node"
-      },
-      {
-        "src": "real-chat.js",
-        "use": "@vercel/node"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/index",
-        "dest": "/index.js"
-      },
-      {
-        "src": "/bookData",
-        "dest": "/bookData.js"
-      },
-      {
-        "src": "/server",
-        "dest": "/server.js"
-      },
-      {
-        "src": "/real-chat",
-        "dest": "/real-chat.js"
-      },
-      {
-        "src": "/(.*)",
-        "dest": "/index.js"
-      }
-    ],
-    "build": {
-      "command": "npm run build"
+  "version": 2,
+  "builds": [
+    {
+      "src": "index.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "bookData.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "server.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "real-chat.js",
+      "use": "@vercel/node"
     }
-  }
+  ],
+  "routes": [
+    {
+      "src": "/index",
+      "dest": "/index.js"
+    },
+    {
+      "src": "/bookData",
+      "dest": "/bookData.js"
+    },
+    {
+      "src": "/server",
+      "dest": "/server.js"
+    },
+    {
+      "src": "/real-chat",
+      "dest": "/real-chat.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.js"
+    }
+  ]
+}
+
   
