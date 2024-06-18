@@ -11,8 +11,11 @@ env.config();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const connectString=`postgres//${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.HostName}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
+
+
 const db = new pg.Client({
-    connectionString: process.env.DATABASE_URL,
+    connectionString:connectString,
     user: process.env.DB_USER,
     host: "localhost",
     database: process.env.DB_NAME,
