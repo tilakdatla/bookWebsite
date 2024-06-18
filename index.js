@@ -10,6 +10,8 @@ import env from "dotenv";
 import { Strategy as GoogleStrategy } from "passport-google-oauth2";
 import axios from "axios";
 import multer from "multer";
+const { Pool } = pg;
+
 
 const app = express();
 const port = 3000;
@@ -35,12 +37,13 @@ app.use(passport.session());
 app.set('view engine', 'ejs');
 
 
-const db = new pg.Client({
+
+const db = new Pool({
   connectionString: process.env.POSTGRES_URL,
-});
+})
 
 
-db.connect();
+
 
 
 app.get('/search',async(req,res)=>{

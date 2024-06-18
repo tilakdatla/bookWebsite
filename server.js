@@ -2,7 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import env from "dotenv";
 import pg from "pg";
-
+const { Pool } = pg;
 
 const app = express();
 const port = 4000;
@@ -12,9 +12,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-const db = new pg.Client({
+const db = new Pool({
     connectionString: process.env.POSTGRES_URL,
-});
+  })
+  
 
 
 app.get("/book", async(req, res) => 
