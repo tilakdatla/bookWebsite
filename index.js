@@ -473,7 +473,7 @@ app.get(
 
 app.get("/", async (req, res) => {
   try {
-    const response = await axios.get(`http://localhost:4000/book`);
+    const response = await axios.get(`https://bookwebsite-server.onrender.com/book`);
     res.render("index.ejs", { book: response.data });
   } catch (error) {
     res.status(500).json({ message: "Error fetching posts" });
