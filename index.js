@@ -57,7 +57,7 @@ app.get('/search',async(req,res)=>{
  
   const searchQuery = req.query.query;
   try{
-    const response = await axios.get(`http://localhost:5000/search/${searchQuery}`);
+    const response = await axios.get(`https://bookwebsite-bookdata.onrender.com/search/${searchQuery}`);
     if(response.data) 
      res.render('search-item', { books: response.data });
   }
@@ -96,7 +96,7 @@ app.get('/profile/:id', async (req, res) => {
 
   try {
     // Fetch book data
-    const response = await axios.get(`http://localhost:5000/book/${id}`);
+    const response = await axios.get(`https://bookwebsite-bookdata.onrender.com/book/${id}`);
     const bookData = response.data || [];
 
     // Fetch user data
@@ -171,7 +171,7 @@ app.post('/upload',upload.single('bookImage'), async(req, res) =>
     };
 
     try{
-     const response = await axios.post(`http://localhost:5000/new`, data);
+     const response = await axios.post(`https://bookwebsite-bookdata.onrender.com/new`, data);
      if(response.data.success)
      {
       res.redirect("/secrets");
@@ -197,7 +197,7 @@ app.post('/upload',upload.single('bookImage'), async(req, res) =>
 app.get('/listing', async(req, res) => {
 
   const id=req.user.id;
-  const response = await axios.get(`http://localhost:5000/book/${id}`);
+  const response = await axios.get(`https://bookwebsite-bookdata.onrender.com/book/${id}`);
   
   if(response.data)
   {
@@ -218,7 +218,7 @@ app.get('/updatebook/:id',async(req,res)=>{
   const bookId=req.params.id;
 
   try{
-    const response = await axios.get(`http://localhost:5000/books/${bookId}`);
+    const response = await axios.get(`https://bookwebsite-bookdata.onrender.com/books/${bookId}`);
 
     if(response.data)
     {
@@ -242,7 +242,7 @@ app.post('/updatebook/:id',upload.single('bookImage'),async(req,res)=>{
 
   try{
     
-    const Response = await axios.get(`http://localhost:5000/books/${id}`);
+    const Response = await axios.get(`https://bookwebsite-bookdata.onrender.com/books/${id}`);
 
     const data={
       title:req.body.title,
@@ -255,7 +255,7 @@ app.post('/updatebook/:id',upload.single('bookImage'),async(req,res)=>{
     };
    
    
-    const response = await axios.post(`http://localhost:5000/book/${id}`,data);
+    const response = await axios.post(`https://bookwebsite-bookdata.onrender.com/book/${id}`,data);
     if(response.data)
     {
       res.redirect('/listing');
@@ -277,7 +277,7 @@ app.post('/removebook/:id',async(req,res)=>{
    
   const bookId=req.params.id;
   try {
-    const response = await axios.post(`http://localhost:5000/remove/${bookId}`);
+    const response = await axios.post(`https://bookwebsite-bookdata.onrender.com/remove/${bookId}`);
     if (response.data.success) {
         res.redirect('/listing');
     } else {
@@ -294,7 +294,7 @@ app.post('/removebook/:id',async(req,res)=>{
 app.get('/active-user', async (req, res) => { // Corrected parameter order
   try {
       const id = req.user.id;
-      const response = await axios.get(`http://localhost:5000/location/${id}`);
+      const response = await axios.get(`https://bookwebsite-bookdata.onrender.com/location/${id}`);
       
       if (response.data) {
           res.render("active-user.ejs", { users: response.data });
@@ -316,7 +316,7 @@ app.get('/bookdata/:id',async(req,res)=>{
     
   try{
     const id=req.params.id;
-    const Response = await axios.get(`http://localhost:5000/books/${id}`);
+    const Response = await axios.get(`https://bookwebsite-bookdata.onrender.com/books/${id}`);
    
     if(Response.data)
     {
@@ -429,7 +429,7 @@ app.get("/secrets", async (req, res) => {
         res.redirect("/additional-info");
       } else {
         try {
-          const response = await axios.get(`http://localhost:5000/book`);
+          const response = await axios.get(`https://bookwebsite-bookdata.onrender.com/book`);
           
           res.render("next.ejs", { books: response.data });
         } catch (error) {
