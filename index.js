@@ -442,7 +442,7 @@ app.get("/sample-book/:id", async (req, res) => {
   const id = parseInt(req.params.id);
 
   try {
-    const response = await axios.get(`http://localhost:4000/book`);
+    const response = await axios.get(`https://bookwebsite-server.onrender.com/book`);
     res.render("sample.ejs", { book: response.data[id - 1] });
   } catch (error) {
     res.status(500).json({ message: "Error fetching posts" });
