@@ -4,13 +4,11 @@ import pg from "pg";
 import bcrypt from "bcrypt";
 import session from "express-session";
 import passport from "passport";
-const { authorize } = passport;
 import { Strategy as LocalStrategy } from "passport-local";
 import env from "dotenv";
 import { Strategy as GoogleStrategy } from "passport-google-oauth2";
 import axios from "axios";
 import multer from "multer";
-const { Pool } = pg;
 import path from "path";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -24,10 +22,10 @@ const saltRounds = 10;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   secret: 'TOPSECRETWORD',
   resave: false,
@@ -44,35 +42,25 @@ app.set('views', path.join(__dirname, 'views')); // Ensure this path is correct
 
 console.log('Views directory:', app.get('views'));
 
-
 const db = new Pool({
   connectionString: process.env.POSTGRES_URL,
-})
-
-
-
-
-
-app.get('/search',async(req,res)=>{
- 
-  const searchQuery = req.query.query;
-  try{
-    const response = await axios.get(`https://bookwebsite-bookdata.onrender.com/search/${searchQuery}`);
-    if(response.data) 
-     res.render('search-item', { books: response.data });
-  }
-  catch(err)
-  {
-    console.log(err);
-    res.status(500).send("Error saving the book");
-  }  
-
-
 });
 
+// Search books
+app.get('/search', async (req, res) => {
+  const searchQuery = req.query.query;
+  try {
+    const response = await axios.get(`https://bookwebsite-bookdata.onrender.com/search/${searchQuery}`);
+    if (response.data) 
+      res.render('search-item', { books: response.data });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Error fetching the books");
+  }
+});
 
-
-app.get('/chat', async (req, res) => {
+// Chat functionality
+app.get('/chat', (req, res) => {
   const userNickname = req.query.user;
   const otherUserNickname = req.query.otherUser;
   const currentUser = req.user || {}; // Get the current user from the session or authentication middleware
@@ -115,84 +103,65 @@ app.get('/profile/:id', async (req, res) => {
   }
 });
 
-const storage=multer.diskStorage(
-{
-    destination: function (req, file, cb){
-        return cb(null,'./uploads');
-    },
-    filename: function(req,file,cb){
-        return cb(null,`${Date.now()}-${file.originalname}`);
-    },
-}
-);
-
-const upload=multer({storage});
-
-app.get('/upload', (req, res) => {
-
-  if (req.isAuthenticated())
-  {
-    res.render("upload.ejs");     
+// Multer configuration for file uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, 'uploads'));
+  },
+  filename: function (req, file, cb) {
+    cb(null, `${Date.now()}-${file.originalname}`);
   }
-  else
-  {
+});
+const upload = multer({ storage });
+
+// Route to render the upload page
+app.get('/upload', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.render("upload.ejs");
+  } else {
     res.redirect("/login");
   }
-})
+});
 
-
+// Format date function
 function formatDate(date) {
   const options = { day: '2-digit', month: 'short', year: 'numeric' };
   return new Intl.DateTimeFormat('en-GB', options).format(date);
 }
 
-
-
-
-app.post('/upload',upload.single('bookImage'), async(req, res) => 
-{
-
-  if (req.isAuthenticated())
-  {
-    
+// Handle book image upload and save book data
+app.post('/upload', upload.single('bookImage'), async (req, res) => {
+  if (req.isAuthenticated()) {
     const date = new Date();
     const formattedDate = formatDate(date);
-    
-    const data={
-      title:req.body.title,
-      summary:req.body.summary,
-      author:req.body.author,
-      rating:req.body.rating,
-      type:req.body.type,
-      description:req.body.description,
-      user_id:req.user.id,
-      date:formattedDate,
+
+    const data = {
+      title: req.body.title,
+      summary: req.body.summary,
+      author: req.body.author,
+      rating: req.body.rating,
+      type: req.body.type,
+      description: req.body.description,
+      user_id: req.user.id,
+      date: formattedDate,
       book_img_location: req.file.path.replace(/\\/g, '/'),
     };
 
-    try{
-     const response = await axios.post(`https://bookwebsite-bookdata.onrender.com/new`, data);
-     if(response.data.success)
-     {
-      res.redirect("/secrets");
-     }
-     else
-     {
-       res.redirect("/upload")
-     }
-    }
-    catch(err)
-    {
+    try {
+      const response = await axios.post('https://bookwebsite-bookdata.onrender.com/new', data);
+      if (response.data.success) {
+        res.redirect("/secrets");
+      } else {
+        res.redirect("/upload");
+      }
+    } catch (err) {
       console.log(err);
       res.status(500).send("Error saving the book");
-    }  
-  }
-  else{
+    }
+  } else {
     res.redirect("/login");
   }
-  
-})
-
+});
 
 app.get('/listing', async(req, res) => {
 
