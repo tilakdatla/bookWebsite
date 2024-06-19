@@ -11,13 +11,18 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth2";
 import axios from "axios";
 import multer from "multer";
 const { Pool } = pg;
-
+import path from "path";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 const app = express();
 const port = 3000;
 
 env.config();
 const saltRounds = 10;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 app.use('/uploads', express.static('uploads'));
 app.use(express.urlencoded({ extended: false }));
@@ -35,7 +40,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views')); // Ensure this path is correct
 
+console.log('Views directory:', app.get('views'));
 
 
 const db = new Pool({
@@ -474,7 +481,7 @@ app.get(
 app.get("/", async (req, res) => {
   try {
     const response = await axios.get(`https://bookwebsite-server.onrender.com/book`);
-    res.render("index.ejs", { book: response.data });
+    res.render("index", { book: response.data });
   } catch (error) {
     res.status(500).json({ message: "Error fetching posts" });
   }
