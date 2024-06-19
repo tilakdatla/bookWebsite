@@ -148,47 +148,50 @@ function formatDate(date) {
 
 
 
-app.post('/upload', async (req, res, next) => {
-  const uploadMiddleware = upload.single('bookImage');
 
-  uploadMiddleware(req, res, async (err) => {
-    if (err) {
-      console.error('Error uploading file:', err);
-      return res.status(500).send('Error uploading the file');
+app.post('/upload',upload.single('bookImage'), async(req, res) => 
+{
+
+  if (req.isAuthenticated())
+  {
+    
+    const date = new Date();
+    const formattedDate = formatDate(date);
+    
+    const data={
+      title:req.body.title,
+      summary:req.body.summary,
+      author:req.body.author,
+      rating:req.body.rating,
+      type:req.body.type,
+      description:req.body.description,
+      user_id:req.user.id,
+      date:formattedDate,
+      book_img_location: req.file.path.replace(/\\/g, '/'),
+    };
+
+    try{
+     const response = await axios.post(`https://bookwebsite-bookdata.onrender.com/new`, data);
+     if(response.data.success)
+     {
+      res.redirect("/secrets");
+     }
+     else
+     {
+       res.redirect("/upload")
+     }
     }
-
-    if (req.isAuthenticated()) {
-      const date = new Date();
-      const formattedDate = formatDate(date);
-
-      const data = {
-        title: req.body.title,
-        summary: req.body.summary,
-        author: req.body.author,
-        rating: req.body.rating,
-        type: req.body.type,
-        description: req.body.description,
-        user_id: req.user.id,
-        date: formattedDate,
-        book_img_location: req.file ? req.file.path.replace(/\\/g, '/') : null,
-      };
-
-      try {
-        const response = await axios.post(`https://bookwebsite-bookdata.onrender.com/new`, data);
-        if (response.data.success) {
-          res.redirect("/secrets");
-        } else {
-          res.redirect("/upload");
-        }
-      } catch (err) {
-        console.log(err);
-        res.status(500).send("Error saving the book");
-      }
-    } else {
-      res.redirect("/login");
-    }
-  });
-});
+    catch(err)
+    {
+      console.log(err);
+      res.status(500).send("Error saving the book");
+    }  
+  }
+  else{
+    res.redirect("/login");
+  }
+  
+})
 
 
 app.get('/listing', async(req, res) => {
