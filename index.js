@@ -577,7 +577,7 @@ passport.use("local", new LocalStrategy(async function verify(username, password
 passport.use("google", new GoogleStrategy({
   clientID: process.env.ClientId,
   clientSecret: process.env.ClientSecret,
-  callbackURL: 'https://book-website-2wvyccsnl-tilak-datlas-projects.vercel.app/auth/google/secrets',
+  callbackURL: 'http://localhost:3000/auth/google/secrets',
   userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
 }, async (accessToken, refreshToken, profile, cb) => {
   try {
