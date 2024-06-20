@@ -24,10 +24,11 @@ const saltRounds = 10;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+app.use(express.static("public"));
 app.use('/uploads', express.static('uploads'));
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static("public"));
+
 app.use(session({
   secret: 'TOPSECRETWORD',
   resave: false,
@@ -576,7 +577,7 @@ passport.use("local", new LocalStrategy(async function verify(username, password
 passport.use("google", new GoogleStrategy({
   clientID: process.env.ClientId,
   clientSecret: process.env.ClientSecret,
-  callbackURL: 'http://localhost:3000/auth/google/secrets',
+  callbackURL: 'https://book-website-2wvyccsnl-tilak-datlas-projects.vercel.app/auth/google/secrets',
   userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
 }, async (accessToken, refreshToken, profile, cb) => {
   try {
