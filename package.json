@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start-all": "concurrently \"node server.js\" \"node real-chat.js\" \"node bookData.js\" \"node index.js\""
+    "start-all": "concurrently  \"node real-chat.js\"  \"node index.js\""
   },
   "author": "tilak",
   "license": "ISC",
